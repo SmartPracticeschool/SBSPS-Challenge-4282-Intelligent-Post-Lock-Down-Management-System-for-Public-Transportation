@@ -112,7 +112,7 @@ def home():
     # Gesture page
     if 'email' in session:
       email = session['email']
-    return render_template('home.html',email = email)
+    return render_template('home.html')
         
 @app.route('/gesture', methods=['GET'])
 def gesture():
