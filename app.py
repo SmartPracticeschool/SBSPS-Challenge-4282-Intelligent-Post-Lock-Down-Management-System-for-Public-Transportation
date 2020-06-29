@@ -24,15 +24,13 @@ from functools import wraps
 
 
 # Define a flask app
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 
 conn_str='DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-lon02-01.services.eu-gb.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=hfl44215;PWD=n53mz4wc9m0hl+z9'
 ibm_db_conn = ibm_db.connect(conn_str,'','')
 
 conn = ibm_db_dbi.Connection(ibm_db_conn)
-
-cursor = conn.cursor()
 
 @app.route('/register', methods=['GET','POST'])
 def register():
@@ -44,16 +42,16 @@ def register():
         name = request.form['name']         
         phone = request.form['phone']         
         email = request.form['email']
-        password = sha256_crypt.encrypt(str(request.form['password']))
+        hash = sha256_crypt.hash(str(request.form['password']))
         home = 'i m home honey'
         work = 'it sucks here'
+        cursor = conn.cursor()
         insert = "INSERT into USERS  VALUES (?,?,?,?,?,?)"
-        params = ((name, phone, email,password, home ,work))
+        params = ((name, phone, email,hash, home ,work))
         stmt_insert = ibm_db.prepare(ibm_db_conn, insert)
         ibm_db.execute(stmt_insert,params)        
         
         cursor.close()
-        ibm_db.close(ibm_db_conn)
         flash('You are now Resgistered','success')
         return redirect(url_for('login'))
     return render_template('register.html') 
@@ -67,30 +65,28 @@ def login():
         return render_template('login.html')
     if request.method == 'POST':
         email = request.form['email']
-        password_user = request.form['password']        
+        password = request.form['password']        
+        cursor = conn.cursor()    
         result =  cursor.execute('SELECT "NAME", "PHONE_NO", "EMAIL_ID", "PASSWORD", "HOME", "WORK" FROM "HFL44215"."USERS" WHERE "EMAIL_ID" = ? FETCH FIRST 1 ROWS ONLY ',[email])
-        if result == True:
-            data = cursor.fetchone() 
-            password = data[3] 
-
-            if sha256_crypt.verify(password_user,password):
-                #app.logger.info('Passwords Matched')
+        data = cursor.fetchone() 
+        if data != None:            
+            hash = data[3]
+            name = data[0]
+            if sha256_crypt.verify(password,hash):
                 session['logged_in'] = True
                 session['email'] = email
+                session['name'] = name
 
                 flash('You are now logged in','success')
                 return redirect(url_for('home'))
             else:
                 error = 'Invalid Login'
-                #app.logger.info('Passwords Not matched')
                 return render_template('login.html',error=error)
             # close connection
-            cursor.close()            
-            ibm_db.close(ibm_db_conn)
+            cursor.close()
             
         else:
-            #app.logger.info('No user')
-            error:'Username not found'
+            error ='User not found! Please Register'
             return render_template('login.html',error=error)   
     return render_template('login.html') 
 
@@ -106,8 +102,16 @@ def is_logged_in(f):
             return redirect(url_for('login'))
     return wrap
 
+# Logout
+@app.route('/logout')
+@is_logged_in
+def logout():
+    session.clear()
+    flash('You are now logged out', 'success')
+    return redirect(url_for('login'))
 
-@app.route('/home', methods=['GET'])
+@app.route('/home')
+@is_logged_in
 def home():
     # Gesture page
     if 'email' in session:
