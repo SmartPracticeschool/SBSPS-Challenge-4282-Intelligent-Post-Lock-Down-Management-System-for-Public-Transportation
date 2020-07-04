@@ -11,17 +11,9 @@
   
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>   
-    
-    <!-- Custom styles for this template -->
-    <link href="/static/css/starter-template.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <!-- Custom styles for this template -->
+  <link href="/static/css/starter-template.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
   </head>
   
   <body>
@@ -56,8 +48,8 @@
         <div class="btn-group">    
           <button class="btn btn-outline-success my-2 my-sm-0 dropdown-toggle" id="dropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{session.name}}</button>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownProfile">
-            <button class="dropdown-item" type="button">Profile</button>
-            <button class="dropdown-item" type="button">Settings</button>
+            <a href="/profile" class="dropdown-item" type="button">Profile</a>
+            <a href="/settings" class="dropdown-item" type="button">Settings</a>
             <div class="dropdown-divider"></div>
             <a href="/logout" class="btn btn-primary dropdown-item text-danger">Logout</a>
           </div>
@@ -105,146 +97,37 @@
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="subway-tab">Subway Form here</div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="car-tab">Car form here</div>
           </div>
-          <div class="row">
-            <div class="col-sm">
-              <label for="origin">From</label>
-              <input class="col-sm-6 custom-select custom-select-sm" list="bus-stops-from" id="origin">
-              <datalist id="bus-stops-from">
-                <option value="Andheri Railway Station"></option>
-                <option value="Majas Depot"></option>
-                <option value="Bandra Bus Station"></option>
-                <option value="Sakinaka Metro Station"></option>
-                <option value="Marol Naka Bus Stop"></option>
-                <option value="Dr. Ambedkar Garden Powai"></option>
-                <option value="Nitie"></option>
-                
-              </datalist>
+          
+            <div class="row">            
+              <div class="col-sm">
+                <label for="origin">From</label>
+                <input class="col-sm-6 custom-select" name="origin" list="bus-stops-from" id="origin" autocomplete="off">
+                <datalist id="bus-stops-from">
+                  {% for stops in bus_stops %}
+                  <option value="{{ stops[0] }}"></option>
+                  {% endfor %}                
+                </datalist>
+              </div>
+              <div class="col-sm">
+                <label for="destination">To</label>
+                <input class="col-sm-6 custom-select" name="destination" list="bus-stops-to" id="destination" autocomplete="off">
+                <datalist id="bus-stops-to">
+                  {% for stops in bus_stops %}  
+                  <option value="{{ stops[0] }}"></option>
+                  {% endfor %}
+                </datalist>
+              </div>
+              <div class="col-sm">
+                <button type="submit" id="submit" class="btn btn-success btn-sm routeButton">Search</button>
+              </div>            
             </div>
-            <div class="col-sm">
-              <label for="destination">To</label>
-              <input class="col-sm-6 custom-select custom-select-sm" list="bus-stops-to" id="destination">
-              <datalist id="bus-stops-to">
-                <option value="Andheri Railway Station"></option>
-                <option value="Majas Depot"></option>
-                <option value="Bandra Bus Station"></option>
-                <option value="Sakinaka Metro Station"></option>
-                <option value="Marol Naka Bus Stop"></option>
-                <option value="Dr. Ambedkar Garden Powai"></option>
-                <option value="Nitie"></option>
-              </datalist>
-            </div>
-            <div class="col-sm">
-              <button type="submit" id="submit" class="btn btn-success btn-sm">Search</button>
-            </div>
-          </div>
+          
         </br>
         <div class="row">
           <div class="col-sm-8">
             <div id="accordion">
-              <div class="card">
-                <div class="card-header" id="headingOne">
-                  <h5 class="mb-0 text-left">
-                    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                      <div role="group" aria-label="First group">
-                        <a href="#" class="badge badge-dark "><i class="fa fa-bus" aria-hidden="true"></i> 186</a>
-                      </div>
-                      <div class="btn-group">
-                        <p class="font-weight-bold">49 m</p>
-                        <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">                        
-                          <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </h5>
-                </div>              
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                  <div class="card-body">
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                  </div>
-                </div>
-              </div>
-              
-              <div class="card">
-                <div class="card-header" id="headingTwo">
-                  <h5 class="mb-0 text-left">
-                    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                      <div role="group" aria-label="First group">
-                        <a href="#" class="badge badge-dark"><i class="fa fa-bus" aria-hidden="true"></i> 186</a> <b>></b> <a href="#" class="badge badge-dark"><i class="fa fa-bus" aria-hidden="true"></i> 25M</a>
-                      </div>
-                      <div class="btn-group">
-                        <p class="font-weight-bold">56 m</p>
-                        <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">                        
-                          <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </h5>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                  <div class="card-body">
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                  </div>
-                </div>
-              </div>
-              
-              <div class="card">
-                <div class="card-header" id="headingThree">
-                  <h5 class="mb-0 text-left">
-                    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                      <div role="group" aria-label="First group">
-                        <a href="#" onclick="return false" class="badge badge-dark"><i class="fa fa-bus" aria-hidden="true"></i> 25</a> <b>></b> <a href="#" class="badge badge-dark"><i class="fa fa-bus" aria-hidden="true"></i> 320</a> <b>></b> <a href="#" class="badge badge-dark"><i class="fa fa-bus" aria-hidden="true"></i> 426</a>
-                      </div>
-                      <div class="btn-group">
-                        <p class="font-weight-bold">1 h 3 m</p>
-                        <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">                        
-                          <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </h5>
-                </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                  <div class="card-body">
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                  </div>
-                </div>
-              </div>
-              
-              <div class="card">
-                <div class="card-header" id="headingFour">
-                  <h5 class="mb-0 text-left">
-                    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                      <div role="group" aria-label="First group">
-                        <a href="#" class="badge badge-dark"><i class="fa fa-bus" aria-hidden="true"></i> 332</a> <b>></b> <a href="#" class="badge badge-dark"><i class="fa fa-bus" aria-hidden="true"></i> 320</a>
-                      </div>
-                      <div class="btn-group">
-                        <p class="font-weight-bold">1 h 12 m</p>
-                        <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">                        
-                          <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </h5>
-                </div>
-                <div id="collapseFour" class="collapse" aria-labelledby="heading" data-parent="#accordion">
-                  <div class="card-body">
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                  </div>
-                </div>
-              </div>
-              
+              <!-- section for viewing bus routes and options 
+                    appeded through jquery script.js -->
             </div>
           </div>
           <div class="col-sm-4">
@@ -328,6 +211,14 @@
   </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA45Lb9EP7uuJiGLnOW1cPpsgwvx0ByqKc&callback=initMap">
   </script>
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type=text/javascript src="/static/js/jquery.js"></script>
+  <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>   
+  <script type=text/javascript src="/static/js/script.js"></script> 
   
 </body>
 </html>

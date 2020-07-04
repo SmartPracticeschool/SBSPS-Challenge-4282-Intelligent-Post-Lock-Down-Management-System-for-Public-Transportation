@@ -1,7 +1,7 @@
 from __future__ import division, print_function
 
 # Flask utils
-from flask import Flask,flash, redirect, url_for, request, render_template,session,logging
+from flask import Flask,flash, redirect, url_for, request, render_template,session,logging,jsonify
 from werkzeug.utils import secure_filename
 
 
@@ -10,27 +10,24 @@ import sys
 import os
 import glob
 
-#IBM DB
-import ibm_db_dbi 
-import ibm_db 
+#MySQL
+from database import cursor, db
 
 #visual recognition
 import json
 from watson_developer_cloud import VisualRecognitionV3
 
+import urllib
 #SHA
 from passlib.hash import sha256_crypt
 from functools import wraps
 
+#http request
+import http.client
+import mimetypes
 
 # Define a flask app
 app = Flask(__name__, static_url_path='/static')
-
-
-conn_str='DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-lon02-01.services.eu-gb.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=hfl44215;PWD=n53mz4wc9m0hl+z9'
-ibm_db_conn = ibm_db.connect(conn_str,'','')
-
-conn = ibm_db_dbi.Connection(ibm_db_conn)
 
 @app.route('/register', methods=['GET','POST'])
 def register():
@@ -43,15 +40,12 @@ def register():
         phone = request.form['phone']         
         email = request.form['email']
         hash = sha256_crypt.hash(str(request.form['password']))
-        home = 'i m home honey'
-        work = 'it sucks here'
-        cursor = conn.cursor()
-        insert = "INSERT into USERS  VALUES (?,?,?,?,?,?)"
-        params = ((name, phone, email,hash, home ,work))
-        stmt_insert = ibm_db.prepare(ibm_db_conn, insert)
-        ibm_db.execute(stmt_insert,params)        
-        
-        cursor.close()
+        insert_user = "INSERT INTO USERS(NAME,EMAIL_ID,PHONE_NUMBER,PASSWORD) VALUES (%s, %s, %s,%s)"
+        params = (name,email,phone,hash)
+        # Insert new user
+        cursor.execute(insert_user, params)
+        db.commit()
+        user_id = cursor.lastrowid   
         flash('You are now Resgistered','success')
         return redirect(url_for('login'))
     return render_template('register.html') 
@@ -65,26 +59,29 @@ def login():
         return render_template('login.html')
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password']        
-        cursor = conn.cursor()    
-        result =  cursor.execute('SELECT "NAME", "PHONE_NO", "EMAIL_ID", "PASSWORD", "HOME", "WORK" FROM "HFL44215"."USERS" WHERE "EMAIL_ID" = ? FETCH FIRST 1 ROWS ONLY ',[email])
-        data = cursor.fetchone() 
-        if data != None:            
-            hash = data[3]
-            name = data[0]
+        password = request.form['password']
+        select_user = 'SELECT USER_ID,NAME, EMAIL_ID, PHONE_NUMBER, PASSWORD , IS_ADMIN FROM USERS WHERE EMAIL_ID = %s '
+        cursor.execute(select_user,[email])
+        result = cursor.fetchone() 
+        if result != None:  
+            user_id = result[0]
+            name = result[1]          
+            hash = result[4]
+            isAdmin = result[5]         
             if sha256_crypt.verify(password,hash):
                 session['logged_in'] = True
                 session['email'] = email
                 session['name'] = name
+                session['user_id'] = user_id
 
-                flash('You are now logged in','success')
-                return redirect(url_for('home'))
+                if(isAdmin == True):
+                    return redirect(url_for('admin'))
+                else:
+                    flash('You are now logged in','success')
+                    return redirect(url_for('home'))
             else:
                 error = 'Invalid Login'
                 return render_template('login.html',error=error)
-            # close connection
-            cursor.close()
-            
         else:
             error ='User not found! Please Register'
             return render_template('login.html',error=error)   
@@ -110,14 +107,91 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
-@app.route('/home')
+@app.route('/home',methods=['GET','POST'])
 @is_logged_in
-def home():
-    # Gesture page
-    if 'email' in session:
-      email = session['email']
-    return render_template('home.html')
-        
+def home():    
+    if request.method == 'GET':
+        bus_stop_names = 'SELECT DISTINCT ORIGIN FROM BUS_TRAVEL'        
+        cursor.execute(bus_stop_names)
+        result = cursor.fetchall()
+        return render_template('home.html',bus_stops = result)
+    # if request.method == 'POST':
+    #     origin = request.form['origin']
+    #     destination =  request.form['destination']
+    #     routes_db =  "SELECT BUS_NUMBER , ORIGIN  as 'FROM', 'NA' as 'VIA',  DESTINY as 'TO' ,'NA' as BUS_NUMBER, STOP_COUNT AS 'TOTAL' FROM BUS_TRAVEL WHERE ORIGIN = %s AND DESTINY = %s UNION ALL SELECT DISTINCT A.BUS_NUMBER , A.ORIGIN as 'FROM', B.ORIGIN as 'VIA' , B.DESTINY as 'TO', B.BUS_NUMBER, A.STOP_COUNT + B.STOP_COUNT as 'TOTAL' FROM BUS_TRAVEL A JOIN BUS_TRAVEL B ON A.DESTINY = B.ORIGIN WHERE A.ORIGIN = %s and B.DESTINY = %s ORDER BY 'TOTAL' ASC LIMIT 1"
+    #     params = (origin,destination,origin,destination)
+    #     print(routes_db)
+    #     cursor.execute(routes_db,params)
+    #     result = cursor.fetchall()
+    #     print(result)
+    #     return render_template('home.html')
+
+
+
+@app.route('/routes', methods=['POST'])
+def routes():
+    origin =  request.form['origin']
+    destination = request.form['destination']
+    routes_db =  "(SELECT BUS_NUMBER as 'BUS_NUMBER_1' , ORIGIN  as 'FROM', 'NA' as 'VIA',  DESTINY as 'TO' ,'NA' as 'BUS_NUMBER_2', STOP_COUNT AS 'TOTAL' FROM BUS_TRAVEL WHERE ORIGIN = %s AND DESTINY = %s ) UNION ALL ( SELECT DISTINCT A.BUS_NUMBER as 'BUS_NUMBER_1', A.ORIGIN as 'FROM', B.ORIGIN as 'VIA' , B.DESTINY as 'TO', B.BUS_NUMBER as 'BUS_NUMBER_2', A.STOP_COUNT + B.STOP_COUNT as 'TOTAL' FROM BUS_TRAVEL A JOIN BUS_TRAVEL B ON A.DESTINY = B.ORIGIN WHERE A.ORIGIN = %s and B.DESTINY = %s ORDER BY 'TOTAL' ASC LIMIT 1)"
+    params = (origin,destination,origin,destination)    
+    cursor.execute(routes_db,params)
+    rv = cursor.fetchall()
+    payload = []
+    content = {}
+    for result in rv:
+        content = {'BUS_NUMBER_1': result[0], 'FROM': result[1],'VIA': result[2] ,'TO': result[3],'BUS_NUMBER_2': result[4],'TOTAL' : result[5]}
+        payload.append(content)
+        content = {}
+    return jsonify(payload)
+
+@app.route('/route_time_dist')
+def route_time_dist():
+    origin = request.args.get('origin')
+    destination = request.args.get('destination')
+    conn = http.client.HTTPSConnection("maps.googleapis.com")
+    payload = ''
+    headers = {
+    'Content-Type': 'application/json'
+    }
+    conn.request("GET","/maps/api/distancematrix/json?origins="+ urllib.parse.quote(origin,safe='')+"&destinations="+ urllib.parse.quote(destination,safe='')+"&key=AIzaSyA45Lb9EP7uuJiGLnOW1cPpsgwvx0ByqKc&units=metric&mode=transit" , payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    print(data.decode("utf-8"))
+    return jsonify(data.decode("utf-8"))
+
+@app.route('/profile', methods=['GET','POST'])
+def profile():
+    if request.method == 'GET':
+        user_id = session["user_id"]
+        print(user_id)
+        select_user = 'SELECT NAME, EMAIL_ID,PHONE_NUMBER PASSWORD FROM USERS WHERE USER_ID = %s'
+        # update user
+        cursor.execute(select_user, (user_id,))
+        rv = cursor.fetchone()
+        payload = []
+        content = {}
+        for result in rv:
+            content = {'name': result[0], 'email_id': result[1],'phone_number': str(result[2]) ,'password': result[3]}
+            payload.append(content)
+            content = {}
+        db.commit()
+        return render_template('profile.html', user = json_data)
+    if request.method == 'POST': 
+        name = request.form['name']         
+        phone = request.form['phone_number']         
+        email = request.form['email_id']
+        user_id = session.user_id
+        hash = sha256_crypt.hash(str(request.form['password']))
+        update_user = "UPDATE USERS SET NAME=%s,EMAIL_ID =%s',PHONE_NUMBER =%s,PASSWORD = %s WHERE USER_ID = %s"
+        params = (name,email,phone,hash,user_id)
+        # update user
+        cursor.execute(update_user, params)
+        db.commit()
+        user_id = cursor.lastrowid   
+        flash('Profile updated','success')
+        return redirect(url_for('profile'))
+
+
 @app.route('/gesture', methods=['GET'])
 def gesture():
     # Gesture page
@@ -142,8 +216,15 @@ def upload():
         return preds
     return None
 
+app.secret_key = 'KomalTai'
+app.config["CACHE_TYPE"] = "null"
 
 if __name__ == '__main__':
     app.secret_key = 'KomalTai'
-    app.run(debug=True)
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.debug = True
+    app.run()
+    #app.run(debug=True)
+
+
 
