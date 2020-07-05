@@ -26,6 +26,10 @@ from functools import wraps
 import http.client
 import mimetypes
 
+
+from newsapi import NewsApiClient
+newsapi = NewsApiClient(api_key='8e6f6b4477454be88b16d8e3313c137d')
+
 # Define a flask app
 app = Flask(__name__, static_url_path='/static')
 
@@ -156,33 +160,25 @@ def route_time_dist():
     conn.request("GET","/maps/api/distancematrix/json?origins="+ urllib.parse.quote(origin,safe='')+"&destinations="+ urllib.parse.quote(destination,safe='')+"&key=AIzaSyA45Lb9EP7uuJiGLnOW1cPpsgwvx0ByqKc&units=metric&mode=transit" , payload, headers)
     res = conn.getresponse()
     data = res.read()
-    print(data.decode("utf-8"))
     return jsonify(data.decode("utf-8"))
 
 @app.route('/profile', methods=['GET','POST'])
 def profile():
     if request.method == 'GET':
         user_id = session["user_id"]
-        print(user_id)
-        select_user = 'SELECT NAME, EMAIL_ID,PHONE_NUMBER PASSWORD FROM USERS WHERE USER_ID = %s'
+        select_user = 'SELECT NAME, EMAIL_ID,PHONE_NUMBER, PASSWORD FROM USERS WHERE USER_ID = %s'
         # update user
         cursor.execute(select_user, (user_id,))
-        rv = cursor.fetchone()
-        payload = []
-        content = {}
-        for result in rv:
-            content = {'name': result[0], 'email_id': result[1],'phone_number': str(result[2]) ,'password': result[3]}
-            payload.append(content)
-            content = {}
+        result = cursor.fetchone()
         db.commit()
-        return render_template('profile.html', user = json_data)
+        return render_template('profile.html', user = result)
     if request.method == 'POST': 
-        name = request.form['name']         
+        name = request.form['name']
         phone = request.form['phone_number']         
         email = request.form['email_id']
-        user_id = session.user_id
+        user_id = session["user_id"]
         hash = sha256_crypt.hash(str(request.form['password']))
-        update_user = "UPDATE USERS SET NAME=%s,EMAIL_ID =%s',PHONE_NUMBER =%s,PASSWORD = %s WHERE USER_ID = %s"
+        update_user = "UPDATE USERS SET NAME=%s , EMAIL_ID =%s ,PHONE_NUMBER =%s,PASSWORD = %s WHERE USER_ID = %s"
         params = (name,email,phone,hash,user_id)
         # update user
         cursor.execute(update_user, params)
@@ -190,6 +186,17 @@ def profile():
         user_id = cursor.lastrowid   
         flash('Profile updated','success')
         return redirect(url_for('profile'))
+
+
+@app.route('/news', methods=['GET'])
+def news():
+    top_headlines = newsapi.get_top_headlines(q='covid',
+                                          category='health',
+                                          language='en',
+                                          country='in',
+                                          page_size=90)
+    articles = top_headlines['articles']    
+    return render_template('news.html',data = articles)
 
 
 @app.route('/gesture', methods=['GET'])

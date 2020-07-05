@@ -27,10 +27,10 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#"><b>ULKA</b> <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/home"><b>ULKA</b> <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">News</a>
+            <a class="nav-link" href="/news">News</a>
           </li>
           
           <li class="nav-item">
@@ -170,8 +170,9 @@
           trafficModel: 'optimistic'
         },
         transitOptions: {
-          modes: ['BUS','TRAIN'],
-          routingPreference: 'FEWER_TRANSFERS',
+          // modes: ['BUS','TRAIN'],
+          // routingPreference: 'FEWER_TRANSFERS',
+          routingPreference: 'LESS_WALKING',
         },
       };
       directionsService.route(request, function(result, status) {
