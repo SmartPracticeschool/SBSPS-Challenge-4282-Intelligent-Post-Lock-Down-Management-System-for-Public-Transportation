@@ -79,7 +79,7 @@ def login():
                 session['user_id'] = user_id
 
                 if(isAdmin == True):
-                    return redirect(url_for('admin'))
+                    return redirect(url_for('admins'))
                 else:
                     flash('You are now logged in','success')
                     return redirect(url_for('home'))
@@ -90,6 +90,7 @@ def login():
             error ='User not found! Please Register'
             return render_template('login.html',error=error)   
     return render_template('login.html') 
+
 
 # check if user logged in
 
@@ -115,7 +116,7 @@ def logout():
 @is_logged_in
 def home():    
     if request.method == 'GET':
-        bus_stop_names = 'SELECT DISTINCT ORIGIN FROM BUS_TRAVEL'        
+        bus_stop_names = 'SELECT DISTINCT ORIGIN FROM BUS_STOP'        
         cursor.execute(bus_stop_names)
         result = cursor.fetchall()
         return render_template('home.html',bus_stops = result)
@@ -130,13 +131,20 @@ def home():
     #     print(result)
     #     return render_template('home.html')
 
-
+@app.route('/admins',methods=['GET','POST'])
+@is_logged_in
+def admins():    
+    if request.method == 'GET':
+        bus_stop_names = 'SELECT DISTINCT ORIGIN FROM BUS_STOP'        
+        cursor.execute(bus_stop_names)
+        result = cursor.fetchall()
+        return render_template('admins.html',bus_stops = result)
 
 @app.route('/routes', methods=['POST'])
 def routes():
     origin =  request.form['origin']
     destination = request.form['destination']
-    routes_db =  "(SELECT BUS_NUMBER as 'BUS_NUMBER_1' , ORIGIN  as 'FROM', 'NA' as 'VIA',  DESTINY as 'TO' ,'NA' as 'BUS_NUMBER_2', STOP_COUNT AS 'TOTAL' FROM BUS_TRAVEL WHERE ORIGIN = %s AND DESTINY = %s ) UNION ALL ( SELECT DISTINCT A.BUS_NUMBER as 'BUS_NUMBER_1', A.ORIGIN as 'FROM', B.ORIGIN as 'VIA' , B.DESTINY as 'TO', B.BUS_NUMBER as 'BUS_NUMBER_2', A.STOP_COUNT + B.STOP_COUNT as 'TOTAL' FROM BUS_TRAVEL A JOIN BUS_TRAVEL B ON A.DESTINY = B.ORIGIN WHERE A.ORIGIN = %s and B.DESTINY = %s ORDER BY 'TOTAL' ASC LIMIT 1)"
+    routes_db =  "(SELECT BUS_NUMBER as 'BUS_NUMBER_1' , ORIGIN  as 'FROM', 'NA' as 'VIA',  DESTINY as 'TO' ,'NA' as 'BUS_NUMBER_2', STOP_COUNT AS 'TOTAL' FROM BUS_STOP WHERE ORIGIN = %s AND DESTINY = %s ) UNION ALL ( SELECT DISTINCT A.BUS_NUMBER as 'BUS_NUMBER_1', A.ORIGIN as 'FROM', B.ORIGIN as 'VIA' , B.DESTINY as 'TO', B.BUS_NUMBER as 'BUS_NUMBER_2', A.STOP_COUNT + B.STOP_COUNT as 'TOTAL' FROM BUS_STOP A JOIN BUS_STOP B ON A.DESTINY = B.ORIGIN WHERE A.ORIGIN = %s and B.DESTINY = %s ORDER BY 'TOTAL' ASC LIMIT 1)"
     params = (origin,destination,origin,destination)    
     cursor.execute(routes_db,params)
     rv = cursor.fetchall()
@@ -174,6 +182,7 @@ def profile():
         return render_template('profile.html', user = result)
     if request.method == 'POST': 
         name = request.form['name']
+
         phone = request.form['phone_number']         
         email = request.form['email_id']
         user_id = session["user_id"]
@@ -232,6 +241,3 @@ if __name__ == '__main__':
     app.debug = True
     app.run()
     #app.run(debug=True)
-
-
-
