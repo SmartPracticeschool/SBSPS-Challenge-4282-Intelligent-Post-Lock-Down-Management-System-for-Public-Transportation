@@ -71,13 +71,13 @@ def login():
             user_id = result[0]
             name = result[1]          
             hash = result[4]
-            isAdmin = result[5]         
+            isAdmin = result[5]  
+            print(isAdmin)       
             if sha256_crypt.verify(password,hash):
                 session['logged_in'] = True
                 session['email'] = email
                 session['name'] = name
                 session['user_id'] = user_id
-
                 if(isAdmin == True):
                     return redirect(url_for('admins'))
                 else:
@@ -135,10 +135,14 @@ def home():
 @is_logged_in
 def admins():    
     if request.method == 'GET':
-        bus_stop_names = 'SELECT DISTINCT ORIGIN FROM BUS_STOP'        
-        cursor.execute(bus_stop_names)
-        result = cursor.fetchall()
-        return render_template('admins.html',bus_stops = result)
+        bus_stop_crowd = "select CCTV_ID, NAME,COUNT from SCHEDULE where FACILITY  = 'STOP'" 
+        bus_croud = "select CCTV_ID,NAME,COUNT from SCHEDULE where FACILITY  = 'BUS'"  
+        cursor.execute(bus_stop_crowd)
+        bus_stop_result = cursor.fetchall()
+
+        cursor.execute(bus_croud)
+        stop_result = cursor.fetchall()
+        return render_template('admins.html',bus_stop_croud_count = bus_stop_result, bus_croud_count = stop_result)
 
 @app.route('/routes', methods=['POST'])
 def routes():
@@ -206,6 +210,29 @@ def news():
                                           page_size=90)
     articles = top_headlines['articles']    
     return render_template('news.html',data = articles)
+
+@app.route('/announcements', methods=['GET','POST'])
+def announcements():
+    if request.method == 'GET':
+        select_user = 'SELECT POST,LINK,CREATED_AT,TYPE,SENTIMENT FROM ANNOUNCEMENTS ORDER BY CREATED_AT DESC'
+        cursor.execute(select_user)
+        result = cursor.fetchall()
+        db.commit()
+        return render_template('announcements.html',alerts = result)
+    if request.method == 'POST':
+        post =  request.form['post']
+        link =  request.form['link']
+        type =  request.form['type']
+        sentiment =  request.form['sentiment']
+        print(post,link,type,sentiment)
+        insert_announcement = "insert into ANNOUNCEMENTS (LINK,POST,TYPE,SENTIMENT) values (%s,%s,%s,%s)"
+        params = (link,post,type,sentiment)
+        # Insert announcements
+        cursor.execute(insert_announcement, params)
+        db.commit()
+        announcements_id = cursor.lastrowid   
+        print(announcements_id)
+        return jsonify([post,link,type,sentiment])
 
 
 @app.route('/gesture', methods=['GET'])
