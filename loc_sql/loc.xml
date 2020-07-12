@@ -1,0 +1,323 @@
+<?xml version="1.0" ?>
+<all>
+	<item>
+		<STOP_ID>101</STOP_ID>
+		<NAME>WADALA DEPOT</NAME>
+		<ADDRESS>Wadala Depot, Wadala West, Wadala, Mumbai, Maharashtra</ADDRESS>
+		<LAT>19.014826</LAT>
+		<LNG>72.843925</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>102</STOP_ID>
+		<NAME>KHODADAD CIRCLE</NAME>
+		<ADDRESS>Khodadad Circle, Doctor Baba Saheb Ambedkar Road, Kohinoor Mill, Dadar, Mumbai, Maharashtra</ADDRESS>
+		<LAT>19.017096</LAT>
+		<LNG>19.017096</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>103</STOP_ID>
+		<NAME>KAPOLE NIWAS - J.N.VARMA CHOWK</NAME>
+		<ADDRESS>Near Kings Circle Flyover, Dr Baba Saheb Ambedkar Rd, Matunga, Mumbai, Maharashtra 400019</ADDRESS>
+		<LAT>19.024649</LAT>
+		<LNG>72.844666</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>104</STOP_ID>
+		<NAME>MAHESHWARI UDYAN</NAME>
+		<ADDRESS>Maheshwari Udyan, Matunga, Mumbai, Maharashtra</ADDRESS>
+		<LAT>19.026745</LAT>
+		<LNG>72.84594</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>105</STOP_ID>
+		<NAME>GANDHI MARKET MATUNGA</NAME>
+		<ADDRESS>Sion Hospital Colony, Sion, Mumbai, Maharashtra 400022</ADDRESS>
+		<LAT>19.033037</LAT>
+		<LNG>72.850098</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>106</STOP_ID>
+		<NAME>LOKMANYA TILAK HOSPITAL</NAME>
+		<ADDRESS>Dr Babasaheb Ambedkar Rd, RB2 Central Railway Quarters, Sion West, Sion, Mumbai, Maharashtra 400022</ADDRESS>
+		<LAT>19.036659</LAT>
+		<LNG>72.856392</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>107</STOP_ID>
+		<NAME>RANI LAXMIBAI CHOWK - SION</NAME>
+		<ADDRESS>Sion Flyover, RL Kelkar Rd, Sion West, Jain Society, Sion East, Mumbai, Maharashtra 400022</ADDRESS>
+		<LAT>19.04162</LAT>
+		<LNG>72.854294</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>108</STOP_ID>
+		<NAME>KURLA LEVEL CROSSING</NAME>
+		<ADDRESS>Naik Nagar, Dharavi, Mumbai, Maharashtra 400070</ADDRESS>
+		<LAT>19.056423</LAT>
+		<LNG>72.860977</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>109</STOP_ID>
+		<NAME>LIONS PARK</NAME>
+		<ADDRESS>Ramachandra Marg, Near Tilak Road, Sindhu Wadi, Ghatkopar East, Mumbai, Maharashtra 400077</ADDRESS>
+		<LAT>19.068363</LAT>
+		<LNG>72.854095</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>110</STOP_ID>
+		<NAME>KURLA POST OFFICE</NAME>
+		<ADDRESS>Kurla West, Kurla, Mumbai, Maharashtra 400070</ADDRESS>
+		<LAT>19.064112</LAT>
+		<LNG>72.865341</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>111</STOP_ID>
+		<NAME>GOL BUILDING</NAME>
+		<ADDRESS>LBS Rd, Kurla West, Kurla, Mumbai, Maharashtra 400070</ADDRESS>
+		<LAT>19.067402</LAT>
+		<LNG>72.866348</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>112</STOP_ID>
+		<NAME>ANJANABAI MAGAR</NAME>
+		<ADDRESS>Kurla West, Kurla, Mumbai, Maharashtra 400070</ADDRESS>
+		<LAT>19.070358</LAT>
+		<LNG>72.866531</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>113</STOP_ID>
+		<NAME>KURLA DEPOT</NAME>
+		<ADDRESS>Shanti Nagar, Kurla West, Kurla, Mumbai, Maharashtra 400070</ADDRESS>
+		<LAT>19.074989</LAT>
+		<LNG>72.868019</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>114</STOP_ID>
+		<NAME>OLD AGRA ROAD</NAME>
+		<ADDRESS>Friends Colony, Kurla West, Kurla, Mumbai, Maharashtra 400070</ADDRESS>
+		<LAT>19.079039</LAT>
+		<LNG>72.871162</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>115</STOP_ID>
+		<NAME>SHEETAL CINEMA</NAME>
+		<ADDRESS>Bail Bajar, Kurla, Mumbai, Maharashtra 400072</ADDRESS>
+		<LAT>19.081997</LAT>
+		<LNG>72.873001</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>116</STOP_ID>
+		<NAME>KAMANI</NAME>
+		<ADDRESS>Kajupada, Kurla, Mumbai, Maharashtra 400072</ADDRESS>
+		<LAT>19.085127</LAT>
+		<LNG>72.877495</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>117</STOP_ID>
+		<NAME>BAIL BAZAR</NAME>
+		<ADDRESS>Sandesh Nagar, Kurla, Mumbai, Maharashtra 400099</ADDRESS>
+		<LAT>19.086456</LAT>
+		<LNG>72.880981</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>118</STOP_ID>
+		<NAME>JARI MARI</NAME>
+		<ADDRESS>Andheri - Kurla Rd, Jarimari, Saki Naka, Mumbai, Maharashtra 400072</ADDRESS>
+		<LAT>19.091866</LAT>
+		<LNG>72.873505</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>119</STOP_ID>
+		<NAME>SAFED POOL</NAME>
+		<ADDRESS>Shivaji Nagar, Saki Naka, Mumbai, Maharashtra 400072</ADDRESS>
+		<LAT>19.096533</LAT>
+		<LNG>72.875008</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>120</STOP_ID>
+		<NAME>VIJAY PRINTING PRESS ANDHERI</NAME>
+		<ADDRESS>B-219, Andheri - Kurla Rd, Safed Pul, Saki Naka, Mumbai, Maharashtra 400072</ADDRESS>
+		<LAT>19.102673</LAT>
+		<LNG>72.877167</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>121</STOP_ID>
+		<NAME>DR.DATTA SAMANT CHOWK - SAKI NAKA</NAME>
+		<ADDRESS>Andheri - Kurla Road, Sag Baug, Marol, Andheri East, Mumbai, Maharashtra 400072</ADDRESS>
+		<LAT>19.105343</LAT>
+		<LNG>72.876686</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>122</STOP_ID>
+		<NAME>STATE BANK OF INDIA ANDHERI</NAME>
+		<ADDRESS>Hotel Silver Arcade, Marol Maroshi Rd, Andheri East, Mumbai, Maharashtra 400059</ADDRESS>
+		<LAT>19.117781</LAT>
+		<LNG>72.871399</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>123</STOP_ID>
+		<NAME>CHANDIVALI JUNCTION</NAME>
+		<ADDRESS>Saki Vihar Rd, Ganesh Nagar, Marol, Andheri East, Mumbai, Maharashtra 400072</ADDRESS>
+		<LAT>19.111677</LAT>
+		<LNG>72.879524</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>124</STOP_ID>
+		<NAME>JOHN BACKER</NAME>
+		<ADDRESS>Ganesh Nagar, Marol, Andheri East, Mumbai, Maharashtra 400072</ADDRESS>
+		<LAT>19.111717</LAT>
+		<LNG>72.879524</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>125</STOP_ID>
+		<NAME>E.S.I.S.LOCAL OFFICE POWAI</NAME>
+		<ADDRESS>Andheri East, Mumbai, Maharashtra 400076</ADDRESS>
+		<LAT>19.117386</LAT>
+		<LNG>72.880775</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>126</STOP_ID>
+		<NAME>TUNGA VILLAGE</NAME>
+		<ADDRESS>Tunga Village, Chandivali, Powai, Mumbai, Maharashtra 400076</ADDRESS>
+		<LAT>19.120308</LAT>
+		<LNG>72.882133</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>127</STOP_ID>
+		<NAME>L &amp; T GATE NO.6</NAME>
+		<ADDRESS>New Mhada Colony, Savarkar Nagar, Chandivali, Powai, Mumbai, Maharashtra 400076</ADDRESS>
+		<LAT>9.123949</LAT>
+		<LNG>72.89267</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>128</STOP_ID>
+		<NAME>DR.AMBEDKAR UDYAN (POWAI)</NAME>
+		<ADDRESS>Powai, Mumbai, Maharashtra</ADDRESS>
+		<LAT>19.126232</LAT>
+		<LNG>72.893692</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>129</STOP_ID>
+		<NAME>VIDYA VIHAR BUS STATION ( W )</NAME>
+		<ADDRESS>Sadguru Nagar, Neelkanth Kingdom, Vidyavihar Society, Vidyavihar, Mumbai, Maharashtra 400086</ADDRESS>
+		<LAT>19.080124</LAT>
+		<LNG>72.88765</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>130</STOP_ID>
+		<NAME>NAVSENA GATE - KIROL VILLAGE</NAME>
+		<ADDRESS>Kirol Village, Vidyavihar Society, Vidyavihar, Mumbai, Maharashtra 400086</ADDRESS>
+		<LAT>19.08152</LAT>
+		<LNG>2.8963</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>131</STOP_ID>
+		<NAME>INDIRA NAGAR - KHALAI VILLAGE VVIHAR</NAME>
+		<ADDRESS>Khalai Village, Vidyavihar Society, Vidyavihar, Mumbai, Maharashtra 400086</ADDRESS>
+		<LAT>19.082031</LAT>
+		<LNG>72.885674</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>132</STOP_ID>
+		<NAME>VIDYA VIHAR S.T.WORKSHOP</NAME>
+		<ADDRESS>Nausena Vihar, Vidyavihar Society, Vidyavihar, Mumbai, Maharashtra 400086</ADDRESS>
+		<LAT>19.080893</LAT>
+		<LNG>72.881538</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>133</STOP_ID>
+		<NAME>NAVPADA</NAME>
+		<ADDRESS>Amar Nagar, Vidyavihar Society, Kurla, Mumbai, Maharashtra 400070</ADDRESS>
+		<LAT>19.082432</LAT>
+		<LNG>72.881119</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>134</STOP_ID>
+		<NAME>MUKUND COMPANY - P.W.D.OFFICE</NAME>
+		<ADDRESS>Kurla West, Kurla, Mumbai, Maharashtra 400070</ADDRESS>
+		<LAT>19.084751</LAT>
+		<LNG>72.888908</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>135</STOP_ID>
+		<NAME>P.W.D.OFFICE</NAME>
+		<ADDRESS>Krishna Nagar, Powai, Mumbai, Maharashtra 400076</ADDRESS>
+		<LAT>19.131887</LAT>
+		<LNG>72.888428</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>136</STOP_ID>
+		<NAME>MORARJI NAGAR</NAME>
+		<ADDRESS>Aarey Road, Passpoli, Powai, Mumbai, Maharashtra 400087</ADDRESS>
+		<LAT>19.133785</LAT>
+		<LNG>72.887917</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>137</STOP_ID>
+		<NAME>NITIE</NAME>
+		<ADDRESS>Vihar Lake Rd, near The Residence Hotel, NITIE Admin Block, Powai, Mumbai, Maharashtra 400087</ADDRESS>
+		<LAT>19.139324</LAT>
+		<LNG>72.90136</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>138</STOP_ID>
+		<NAME>RAMDA HOTEL (POWAI)</NAME>
+		<ADDRESS>Murarji Nagar, Mayur Nagar, Passpoli, Powai, Mumbai, Maharashtra 400087</ADDRESS>
+		<LAT>19.13653</LAT>
+		<LNG>72.899422</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>139</STOP_ID>
+		<NAME>VIHAR LAKE</NAME>
+		<ADDRESS>Vihar Lake Rd, Mahatma Phule Nagar, Aarey Colony, Goregaon, Mumbai, Maharashtra 400087</ADDRESS>
+		<LAT>19.139936</LAT>
+		<LNG>72.898094</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+	<item>
+		<STOP_ID>1000</STOP_ID>
+		<NAME>WADALA DEPOT</NAME>
+		<ADDRESS>Wadala Depot, Wadala West, Wadala, Mumbai, Maharashtra</ADDRESS>
+		<LAT>19.014826</LAT>
+		<LNG>72.843925</LNG>
+		<TYPE>BUS_STOP</TYPE>
+	</item>
+</all>
