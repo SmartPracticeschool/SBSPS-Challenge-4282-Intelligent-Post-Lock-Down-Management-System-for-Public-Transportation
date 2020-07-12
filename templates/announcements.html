@@ -5,7 +5,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="/static/images/owl.svg" sizes="any" type="image/svg+xml">
-    <title>Ulka | News</title>
+    <title>Ulka | Announcements</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     
@@ -21,28 +21,23 @@
     {% include 'includes/_navbar.html' %}
     
     <div class="container">
-
-            
+      {% for alert in alerts %}
+          {% if alert[4] == 'POSITIVE' %}
+            <div class="alert alert-success" onclick="window.open('{{ alert[1] }}','_blank');"  style="cursor: pointer;" role="alert">
+          {% endif %}
+          {% if alert[4] == 'NEGATIVE' %}
+            <div class="alert alert-danger" onclick="window.open('{{ alert[1] }}','_blank');"  style="cursor: pointer;" role="alert">
+          {% endif %}
+          {% if alert[4] == 'NEUTRAL' %}
+            <div class="alert alert-primary" onclick="window.open('{{ alert[1] }}','_blank');"  style="cursor: pointer;" role="alert">
+          {% endif %}
         
-        <div id="news_cols" class="card-columns">
-            <div>
-                {% for key in data %}
-                    <div class="card" onclick="window.open('{{ key['url'] }}','mywindow');" style="cursor: pointer;">
-                        <img class="card-img-top" src="{{ key['urlToImage'] }}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ key['title'] }}</h5>
-                            <p class="card-text">{{ key['description'] }}</p>
-                            <p class="card-text"><small class="text-muted">{{ key['publishedAt'] }}</small></p>
-                            <footer class="blockquote-footer">
-                                <small class="text-muted">
-                                  Source <cite title="Source Title">{{ key['source'].name }}</cite>
-                                </small>
-                              </footer>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+          <h4 class="alert-heading">{{ alert[3] }}</h4>
+          <p>{{ alert[0] }}</p>
+          <hr>
+          <p class="mb-0">Published Date: {{ alert[2] }}</p>
         </div>
+      {% endfor %}
     </div>
     
 </main><!-- /.container -->

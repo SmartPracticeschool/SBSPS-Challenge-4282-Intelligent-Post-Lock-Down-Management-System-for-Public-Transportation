@@ -1,0 +1,131 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/static/images/owl.svg" sizes="any" type="image/svg+xml">
+  <title>Ulka | Administration</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <!-- Custom styles for this template -->
+  <link href="/static/css/starter-template.css" rel="stylesheet">
+</head>
+
+<body>
+  
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand"href="#"><img class="d-block" width="36" height="36"  src="/static/images/owl.png"  focusable="false" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home"><b>ULKA</b> <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Announcements</a>
+        </li>
+      </ul>
+      
+      <div class="btn-group">    
+        <button class="btn btn-outline-success my-2 my-sm-0 dropdown-toggle" id="dropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{session.name}}</button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownProfile">
+          <a href="/profile" class="dropdown-item" type="button">Profile</a>
+          <a href="/settings" class="dropdown-item" type="button">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a href="/logout" class="btn btn-primary dropdown-item text-danger">Logout</a>
+        </div>
+      </div>       
+    </div>
+  </nav>
+  
+  <div class="container-fluid">
+    
+    <div class="row">
+      <div class="col-8">
+        <h2>BUS STOP CROWD DATA</h2>
+        <table class="table table-sm">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">SR.NO.</th>
+              <th scope="col">NAME</th>
+              <th scope="col">CROWD COUNT</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for stop in bus_stop_croud_count %}
+            <tr>
+              <th scope="row">{{ stop[0] }}</th>
+              <td>{{ stop[1] }}</td>
+              <td>{{ stop[2] }}</td>
+            </tr>
+            {% endfor %} 
+          </tbody>
+        </table>
+        <hr>
+        <h2>BUSES CROWD DATA</h2>
+        <table class="table table-sm">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">SR.NO.</th>
+              <th scope="col">BUS NO.</th>
+              <th scope="col">CROWD COUNT</th>
+              <th scope="col">CURRENT LOCATION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bus in bus_croud_count %}
+            <tr>                
+              <th scope="row">{{ bus[0] }}</th>
+              <td>{{ bus[1] }}</td>
+              <td>{{ bus[2] }}</td>
+              <td>NA</td>
+            </tr>
+            {% endfor %} 
+          </tbody>
+        </table>
+      </div>
+      <div class="col-4">
+          <div class="form-group">
+            <label for="textareaPost">Post</label>
+            <textarea class="form-control" id="textareaPost" aria-label="With textarea"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="inputLink">Link</label>
+            <input type="text" class="form-control" id="inputLink" placeholder="https:domain.com/sample">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputType">Type</label>
+              <select id="inputType" class="form-control">
+                <option selected>Notice</option>
+                <option>Alert</option>
+                <option>Tenative</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputSentiment">Sentiment</label>
+              <select id="inputSentiment" class="form-control">
+                <option selected>POSITIVE</option>
+                <option >NEUTRAL</option>
+                <option>NEGATIVE</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" id="btnAnnnouncement" class="btn btn-primary">Submit</button>
+      </div>
+    </div>   
+  </div>
+<script type=text/javascript src="/static/js/jquery.js"></script>
+<script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>   
+<script type=text/javascript src="/static/js/announcements.js"></script> 
+</body>
+</html>
