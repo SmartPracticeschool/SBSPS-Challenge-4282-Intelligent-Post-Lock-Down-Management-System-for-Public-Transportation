@@ -54,7 +54,7 @@ def autoupdate (sc):
             visual =json.loads(json.dumps(classes, indent=2))
             preds=visual['images'][0]['classifiers'][0]['classes'][0]['class']
 
-            ## IF NOT OKAY DECLARED AS CROWED
+            ## IF NOT OKAY DECLARED AS CROWDED
             if (preds) == 'Not Okay':
                 count = -1
                 print(count)

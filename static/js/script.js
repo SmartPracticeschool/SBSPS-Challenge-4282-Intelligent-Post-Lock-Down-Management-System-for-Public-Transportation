@@ -30,10 +30,10 @@ $(document).ready(function() {
         });
         $.when(async2, async1).done(function(result2, result1) {
             json = JSON.parse(result2[0])
-            console.log(json.rows[0]['elements'][0]['distance'].text)
-            console.log(json.rows[0]['elements'][0]['duration'].text)
-            console.log(json.rows[0]['elements'][0]['fare'].currency)
-            console.log(json.rows[0]['elements'][0]['fare'].text)
+            // console.log(json.rows[0]['elements'][0]['distance'].text)
+            // console.log(json.rows[0]['elements'][0]['duration'].text)
+            // console.log(json.rows[0]['elements'][0]['fare'].currency)
+            // console.log(json.rows[0]['elements'][0]['fare'].text)
             
             data = result1[0];
 

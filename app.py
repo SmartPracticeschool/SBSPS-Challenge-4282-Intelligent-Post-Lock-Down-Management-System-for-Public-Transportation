@@ -172,6 +172,7 @@ def route_time_dist():
     conn.request("GET","/maps/api/distancematrix/json?origins="+ urllib.parse.quote(origin,safe='')+"&destinations="+ urllib.parse.quote(destination,safe='')+"&key=AIzaSyA45Lb9EP7uuJiGLnOW1cPpsgwvx0ByqKc&units=metric&mode=transit" , payload, headers)
     res = conn.getresponse()
     data = res.read()
+    print(data)
     return jsonify(data.decode("utf-8"))
 
 @app.route('/profile', methods=['GET','POST'])
@@ -258,6 +259,7 @@ def upload():
             preds=a['images'][0]['classifiers'][0]['classes'][0]['class']
         return preds
     return None
+
 
 app.secret_key = 'KomalTai'
 app.config["CACHE_TYPE"] = "null"
