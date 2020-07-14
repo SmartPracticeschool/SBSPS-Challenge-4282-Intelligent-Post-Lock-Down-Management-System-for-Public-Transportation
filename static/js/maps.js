@@ -5,14 +5,14 @@ function initMap() {
   var directionsRenderer = new google.maps.DirectionsRenderer();
   var mumbai = new google.maps.LatLng(19.082439, 72.808222);
   var mapOptions = {
-    zoom:10,
+    zoom:11,
     center: mumbai
   }
 
   var map = new google.maps.Map(document.getElementById('map'), mapOptions);
   directionsRenderer.setMap(map);
   
-  downloadUrl('loc.xml', function(data) {
+  downloadUrl('/static/xml/loc.xml', function(data) {
     var xml = data.responseXML;
     var markers = xml.getElementsByTagName("item")
     Array.prototype.forEach.call(markers, function(markerElem) {

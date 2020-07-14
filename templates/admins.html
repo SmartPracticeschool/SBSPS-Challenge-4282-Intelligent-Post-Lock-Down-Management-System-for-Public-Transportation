@@ -58,14 +58,8 @@
               <th scope="col">CROWD COUNT</th>
             </tr>
           </thead>
-          <tbody>
-            {% for stop in bus_stop_croud_count %}
-            <tr>
-              <th scope="row">{{ stop[0] }}</th>
-              <td>{{ stop[1] }}</td>
-              <td>{{ stop[2] }}</td>
-            </tr>
-            {% endfor %} 
+          <tbody id="table-bus-stop">
+            
           </tbody>
         </table>
         <hr>
@@ -79,15 +73,7 @@
               <th scope="col">CURRENT LOCATION</th>
             </tr>
           </thead>
-          <tbody>
-            {% for bus in bus_croud_count %}
-            <tr>                
-              <th scope="row">{{ bus[0] }}</th>
-              <td>{{ bus[1] }}</td>
-              <td>{{ bus[2] }}</td>
-              <td>NA</td>
-            </tr>
-            {% endfor %} 
+          <tbody id="table-bus">
           </tbody>
         </table>
       </div>
@@ -126,6 +112,6 @@
 <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>   
-<script type=text/javascript src="/static/js/announcements.js"></script> 
+<script type=text/javascript src="/static/js/admins.js"></script> 
 </body>
 </html>

@@ -1,7 +1,7 @@
 from __future__ import division, print_function
 
 # Flask utils
-from flask import Flask,flash, redirect, url_for, request, render_template,session,logging,jsonify
+from flask import Flask,flash, redirect, url_for, request, render_template,session,logging,jsonify,send_from_directory
 from werkzeug.utils import secure_filename
 
 
@@ -54,7 +54,9 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html') 
 
-
+@app.route('/xml/<path:path>')
+def send_js(path):
+    return send_from_directory('xml', path)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -116,9 +118,11 @@ def logout():
 @is_logged_in
 def home():    
     if request.method == 'GET':
+        cursor = db.cursor()
         bus_stop_names = 'SELECT DISTINCT ORIGIN FROM BUS_STOP'        
         cursor.execute(bus_stop_names)
         result = cursor.fetchall()
+        db.commit()
         return render_template('home.html',bus_stops = result)
     # if request.method == 'POST':
     #     origin = request.form['origin']
@@ -135,14 +139,23 @@ def home():
 @is_logged_in
 def admins():    
     if request.method == 'GET':
+        return render_template('admins.html')
+
+@app.route('/adminsdata',methods=['GET','POST'])
+def adminsdata():    
+    if request.method == 'GET':
+        cursor = db.cursor()
         bus_stop_crowd = "select CCTV_ID, NAME,COUNT from SCHEDULE where FACILITY  = 'STOP'" 
         bus_croud = "select CCTV_ID,NAME,COUNT from SCHEDULE where FACILITY  = 'BUS'"  
+        bus_stop_result = 0
+        stop_result = 0
+
         cursor.execute(bus_stop_crowd)
         bus_stop_result = cursor.fetchall()
-
         cursor.execute(bus_croud)
         stop_result = cursor.fetchall()
-        return render_template('admins.html',bus_stop_croud_count = bus_stop_result, bus_croud_count = stop_result)
+        db.commit()
+        return jsonify(bus_stop_result,stop_result)
 
 @app.route('/routes', methods=['POST'])
 def routes():
