@@ -143,10 +143,10 @@ def adminsdata():
         db.commit()
         return jsonify(bus_stop_result,stop_result)
 
-@app.route('/homedata')
+@app.route('/homedata',methods=['POST'])
 def homedata():  
-    origin = request.args.get('origin')
-    destination = request.args.get('destination')
+    origin =  request.form['origin']
+    destination = request.form['destination']
     seat_count = "select STOP_CROWD,EMPTY_SEATS from BUS_STOP where ORIGIN  = %s  and DESTINY = %s" 
     param = (origin,destination)
     cursor.execute(seat_count,param)
@@ -154,10 +154,10 @@ def homedata():
     return jsonify(seat)
 
 
-@app.route('/routes')
+@app.route('/routes', methods=['POST'])
 def routes():
-    origin = request.args.get('origin')
-    destination = request.args.get('destination')
+    origin =  request.form['origin']
+    destination = request.form['destination']
     routes_db =  "(SELECT BUS_NUMBER as 'BUS_NUMBER_1' , ORIGIN  as 'FROM', 'NA' as 'VIA',  DESTINY as 'TO' ,'NA' as 'BUS_NUMBER_2', STOP_COUNT AS 'TOTAL' FROM BUS_STOP WHERE ORIGIN = %s AND DESTINY = %s ) UNION ALL ( SELECT DISTINCT A.BUS_NUMBER as 'BUS_NUMBER_1', A.ORIGIN as 'FROM', B.ORIGIN as 'VIA' , B.DESTINY as 'TO', B.BUS_NUMBER as 'BUS_NUMBER_2', A.STOP_COUNT + B.STOP_COUNT as 'TOTAL' FROM BUS_STOP A JOIN BUS_STOP B ON A.DESTINY = B.ORIGIN WHERE A.ORIGIN = %s and B.DESTINY = %s ORDER BY 'TOTAL' ASC LIMIT 1)"
     params = (origin,destination,origin,destination)    
     cursor.execute(routes_db,params)
@@ -172,10 +172,10 @@ def routes():
 
 
 
-@app.route('/route_time_dist')
+@app.route('/route_time_dist',methods=['POST'])
 def route_time_dist():
-    origin = request.args.get('origin')
-    destination = request.args.get('destination')
+    origin =  request.form['origin']
+    destination = request.form['destination']
     conn = http.client.HTTPSConnection("maps.googleapis.com")
     payload = ''
     headers = {

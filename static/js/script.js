@@ -6,7 +6,7 @@ $(document).ready(function() {
                 origin : $('#originStop').val(),
                 destination : $('#destinationStop').val()
             },
-            type: 'GET',
+            type: 'POST',
             url: '/routes',
             success: function( data ){  
                 console.log(data)
@@ -20,7 +20,7 @@ $(document).ready(function() {
                 origin : $('#originStop').val(),
                 destination : $('#destinationStop').val()
             },
-            type: 'GET',
+            type: 'POST',
             url: '/route_time_dist',
             success: function(data) {
                 console.log(data)
@@ -34,7 +34,7 @@ $(document).ready(function() {
                 origin : $('#originStop').val(),                
                 destination : $('#destinationStop').val()
             },
-            type: 'GET',
+            type: 'POST',
             url: '/homedata',
             success: function(data) {
                 console.log(data)
