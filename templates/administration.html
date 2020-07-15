@@ -1,0 +1,35 @@
+<html>
+<body>
+    <script>
+     setInterval(function() {
+     $.ajax({
+      type: "POST",
+      url: "/admins",
+     })
+      .done(function( data ) {
+        console.log(data);
+        var tableHtml = '';
+        for (row in data) {
+          tableHtml += '<tr>';
+          for (d in row) {
+            tableHtml += '<td>' + d + '</td>';
+          }
+          tableHtml += '</tr>';
+        }
+        $("#table-box").html(tableHtml)
+       }).fail(function(jqXHR, textStatus, errorThrown) {
+         console.log(jqXHR, textStatus, errorThrown);
+       });
+      }, 1000 * 60); 
+      </script>
+    <table border="2" cellpadding="4" cellspacing="5" id="table-box" >
+    {% for row in data %}
+        <tr>
+        {% for d in row %}
+            <td>{{ d }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+     </body>
+    </html>
