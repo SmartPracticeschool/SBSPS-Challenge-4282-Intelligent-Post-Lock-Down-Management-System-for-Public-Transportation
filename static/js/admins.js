@@ -26,7 +26,7 @@ $(document).ready(function() {
                     tableBusHtml += '<td>'+row[j]+'</td>'
                 }
                 
-                tableBusHtml += '<td>NA</td></tr>';
+                tableBusHtml += '</tr>';
             }
             $("#table-bus").html("");
             $("#table-bus").html(tableBusHtml)

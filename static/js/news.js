@@ -23,8 +23,3 @@ $(document).ready(function() {
         event.preventDefault();     
     });    
 });
-    
-    
-    // .done(function() {
-    //     console.log('done');
-    // });

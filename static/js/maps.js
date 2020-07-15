@@ -37,7 +37,7 @@ function initMap() {
         var marker = null;
         
         var icons = { 
-          icon: '/static/images/stop.png'
+          icon: '/static/images/bus-stop.png'
         };
         
         marker = new google.maps.Marker({
@@ -52,14 +52,36 @@ function initMap() {
         });
       });
     });
+
+    downloadUrl('/static/xml/live.xml', function(data) {
+      var xml = data.responseXML;
+      var markers = xml.getElementsByTagName("item")
+      Array.prototype.forEach.call(markers, function(markerElem) {
+          var point = new google.maps.LatLng(
+          parseFloat(markerElem.getElementsByTagName("latitude")[0].childNodes[0].nodeValue),
+          parseFloat(markerElem.getElementsByTagName("longitude")[0].childNodes[0].nodeValue));
+
+          var marker = null;
+          
+          var icons = { 
+              icon: '/static/images/transport.png'
+          };
+          
+          marker = new google.maps.Marker({
+              map: map,
+              position: point,
+              icon : icons.icon
+          });
+      });
+  });
     
     document.getElementById('submit').addEventListener('click', function() {
       calcRoute(directionsService, directionsRenderer);
     });
   }
   function calcRoute(directionsService, directionsRenderer) {
-    var start = document.getElementById('origin').value;
-    var end = document.getElementById('destination').value;
+    var start = document.getElementById('originStop').value;
+    var end = document.getElementById('destinationStop').value;
     
     var request = {
       origin: start,
@@ -89,7 +111,8 @@ function initMap() {
       var pos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      };              
+      };
+      
       infoWindow.setPosition(pos);
       infoWindow.setContent('Location found.');
       infoWindow.open(map);

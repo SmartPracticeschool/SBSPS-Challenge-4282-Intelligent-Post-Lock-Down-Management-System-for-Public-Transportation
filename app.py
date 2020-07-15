@@ -50,7 +50,7 @@ def register():
         cursor.execute(insert_user, params)
         db.commit()
         user_id = cursor.lastrowid   
-        flash('You are now Resgistered','success')
+        flash('You are now Registered','success')
         return redirect(url_for('login'))
     return render_template('register.html') 
 
@@ -93,9 +93,7 @@ def login():
             return render_template('login.html',error=error)   
     return render_template('login.html') 
 
-
 # check if user logged in
-
 def is_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -124,16 +122,6 @@ def home():
         result = cursor.fetchall()
         db.commit()
         return render_template('home.html',bus_stops = result)
-    # if request.method == 'POST':
-    #     origin = request.form['origin']
-    #     destination =  request.form['destination']
-    #     routes_db =  "SELECT BUS_NUMBER , ORIGIN  as 'FROM', 'NA' as 'VIA',  DESTINY as 'TO' ,'NA' as BUS_NUMBER, STOP_COUNT AS 'TOTAL' FROM BUS_TRAVEL WHERE ORIGIN = %s AND DESTINY = %s UNION ALL SELECT DISTINCT A.BUS_NUMBER , A.ORIGIN as 'FROM', B.ORIGIN as 'VIA' , B.DESTINY as 'TO', B.BUS_NUMBER, A.STOP_COUNT + B.STOP_COUNT as 'TOTAL' FROM BUS_TRAVEL A JOIN BUS_TRAVEL B ON A.DESTINY = B.ORIGIN WHERE A.ORIGIN = %s and B.DESTINY = %s ORDER BY 'TOTAL' ASC LIMIT 1"
-    #     params = (origin,destination,origin,destination)
-    #     print(routes_db)
-    #     cursor.execute(routes_db,params)
-    #     result = cursor.fetchall()
-    #     print(result)
-    #     return render_template('home.html')
 
 @app.route('/admins',methods=['GET','POST'])
 @is_logged_in
@@ -141,26 +129,35 @@ def admins():
     if request.method == 'GET':
         return render_template('admins.html')
 
+
 @app.route('/adminsdata',methods=['GET','POST'])
-def adminsdata():    
+def adminsdata():
     if request.method == 'GET':
         cursor = db.cursor()
         bus_stop_crowd = "select CCTV_ID, NAME,COUNT from SCHEDULE where FACILITY  = 'STOP'" 
-        bus_croud = "select CCTV_ID,NAME,COUNT from SCHEDULE where FACILITY  = 'BUS'"  
-        bus_stop_result = 0
-        stop_result = 0
-
+        bus_crowd = "select CCTV_ID,NAME,COUNT,concat('<a href=\"https://www.google.com/maps/@',latitude,',' , longitude,',17z\">',latitude,',',longitude ,'</a>') as Location from transport.SCHEDULE as S left join  traccar.tc_positions as T on T.deviceid = S.deviceid where S.FACILITY  = 'BUS' and T.id = ( SELECT max(T.id) FROM traccar.tc_positions )"
         cursor.execute(bus_stop_crowd)
         bus_stop_result = cursor.fetchall()
-        cursor.execute(bus_croud)
+        cursor.execute(bus_crowd)
         stop_result = cursor.fetchall()
         db.commit()
         return jsonify(bus_stop_result,stop_result)
 
-@app.route('/routes', methods=['POST'])
+@app.route('/homedata')
+def homedata():  
+    origin = request.args.get('origin')
+    destination = request.args.get('destination')
+    seat_count = "select STOP_CROWD,EMPTY_SEATS from BUS_STOP where ORIGIN  = %s  and DESTINY = %s" 
+    param = (origin,destination)
+    cursor.execute(seat_count,param)
+    seat = cursor.fetchall()
+    return jsonify(seat)
+
+
+@app.route('/routes')
 def routes():
-    origin =  request.form['origin']
-    destination = request.form['destination']
+    origin = request.args.get('origin')
+    destination = request.args.get('destination')
     routes_db =  "(SELECT BUS_NUMBER as 'BUS_NUMBER_1' , ORIGIN  as 'FROM', 'NA' as 'VIA',  DESTINY as 'TO' ,'NA' as 'BUS_NUMBER_2', STOP_COUNT AS 'TOTAL' FROM BUS_STOP WHERE ORIGIN = %s AND DESTINY = %s ) UNION ALL ( SELECT DISTINCT A.BUS_NUMBER as 'BUS_NUMBER_1', A.ORIGIN as 'FROM', B.ORIGIN as 'VIA' , B.DESTINY as 'TO', B.BUS_NUMBER as 'BUS_NUMBER_2', A.STOP_COUNT + B.STOP_COUNT as 'TOTAL' FROM BUS_STOP A JOIN BUS_STOP B ON A.DESTINY = B.ORIGIN WHERE A.ORIGIN = %s and B.DESTINY = %s ORDER BY 'TOTAL' ASC LIMIT 1)"
     params = (origin,destination,origin,destination)    
     cursor.execute(routes_db,params)
@@ -172,6 +169,8 @@ def routes():
         payload.append(content)
         content = {}
     return jsonify(payload)
+
+
 
 @app.route('/route_time_dist')
 def route_time_dist():
@@ -200,7 +199,6 @@ def profile():
         return render_template('profile.html', user = result)
     if request.method == 'POST': 
         name = request.form['name']
-
         phone = request.form['phone_number']         
         email = request.form['email_id']
         user_id = session["user_id"]
@@ -249,36 +247,12 @@ def announcements():
         return jsonify([post,link,type,sentiment])
 
 
-@app.route('/gesture', methods=['GET'])
-def gesture():
-    # Gesture page
-    return render_template('base.html')
 
-
-@app.route('/predict', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        # Get the file from post request
-        f = request.files['image']
-
-        # Save the file to ./uploads
-        basepath = os.path.dirname(__file__)
-        file_path = os.path.join(basepath, 'uploads', secure_filename(f.filename))
-        f.save(file_path)
-        visual_recognition = VisualRecognitionV3('2018-03-19',iam_apikey='YgNSrJcWFSrLlIkng2XsEmY6k-HIer3DShnSNeop8Fue')
-        with open(file_path, 'rb') as images_file:
-            classes = visual_recognition.classify(images_file,threshold='0.6',classifier_ids='DefaultCustomModel_918288861').get_result()
-            a=json.loads(json.dumps(classes, indent=2))
-            preds=a['images'][0]['classifiers'][0]['classes'][0]['class']
-        return preds
-    return None
-
-
-app.secret_key = 'KomalTai'
+app.secret_key = 'Bazinga'
 app.config["CACHE_TYPE"] = "null"
 
 if __name__ == '__main__':
-    app.secret_key = 'KomalTai'
+    app.secret_key = 'Bazinga'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True
     app.run()

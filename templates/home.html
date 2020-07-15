@@ -46,25 +46,17 @@
                 </div>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" id="car-tab" data-toggle="tab" href="#car" role="tab" aria-controls="car" aria-selected="false">
-                <div class="col">
-                  <i class="fa fa-car" aria-hidden="true"></i> Car
-                </div>
-              </a>
-            </li>
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="bus-tab">Bus Form here</div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="train-tab">Train Form here</div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="subway-tab">Subway Form here</div>
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="car-tab">Car form here</div>
           </div>
           
             <div class="row">            
               <div class="col-sm">
                 <label for="origin">From</label>
-                <input class="col-sm-6 custom-select" name="origin" list="bus-stops-from" id="origin" autocomplete="off">
+                <input class="col-sm-6 custom-select" name="origin" list="bus-stops-from" id="originStop" autocomplete="off">
                 <datalist id="bus-stops-from">
                   {% for stops in bus_stops %}
                   <option value="{{ stops[0] }}"></option>
@@ -73,7 +65,7 @@
               </div>
               <div class="col-sm">
                 <label for="destination">To</label>
-                <input class="col-sm-6 custom-select" name="destination" list="bus-stops-to" id="destination" autocomplete="off">
+                <input class="col-sm-6 custom-select" name="destination" list="bus-stops-to" id="destinationStop" autocomplete="off">
                 <datalist id="bus-stops-to">
                   {% for stops in bus_stops %}  
                   <option value="{{ stops[0] }}"></option>
